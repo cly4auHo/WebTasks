@@ -1,19 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<meta charset="UTF-8" />
+	<link href="style.css" rel="stylesheet" />
+</head>
+
+<body>
+
 <%@ page import="java.util.regex.Pattern" %>
 <%@ page import="java.util.regex.Matcher" %>
-
-<%
-// login (email) type: text (errors emty or not email)
-// name type: text     (errors not empty)
-// age type: text  12~100
-// address select  (check address)
-// gender radiobutton (errors not empty)
-// comments textarea (not empty)(check not null)
-// i agree to install AmigoBrowser (no DB) checkbox
-// password password  min:8char(2-numbers,2-Headletters Latin only)(errors pass not ???)
-// repeat password  (no DB) password
-
-// rigthside Error text
-%>
+<%@ page import="jsplogic.DBInserter" %>
 
 <%!boolean existError = true;%>
 
@@ -26,6 +23,7 @@ String gender = request.getParameter("gender");
 String address = request.getParameter("address");
 String comments = request.getParameter("comments");
 String amigo = request.getParameter("amigo");
+String name = request.getParameter("name");
 
 StringBuilder errorText = new StringBuilder("<ul>");
 String regexMail = "^(.+)@(.+)$";
@@ -77,7 +75,7 @@ if(login != null){
 		errorText.append("<li>Password and RePassword must be equals</li>");
 	}
 
-	if(age.length() == 0){
+	if(age == null || age.length() == 0){
 		existError = true;
 		errorText.append("<li>Age field is empty</li>");
 	}else{
@@ -102,11 +100,10 @@ if(login != null){
 	errorText.append("</ul>");
 	
 }
-
 	if(existError){
 %>
 
-<form action = ''>
+<form action = '' method="post">
 	<table border = '1'>
 	<tr>
 		<td width = '50' align = 'center'>
@@ -117,6 +114,15 @@ if(login != null){
 		</td>
 	  </tr>
 	  
+	<tr>
+		<td width = '50' align = 'center'>
+		Name
+		</td>
+		<td width = '50' align = 'center'>
+		<input type = 'text', name = 'name'/>
+		</td>
+	  </tr>
+
 	  <tr>
 		<td width = '50' align = 'center'>
 		Password
@@ -198,9 +204,16 @@ if(login != null){
 
 <%
 }
-
-	if(existError)
+	
+	if(existError){
 		out.write(errorText.toString());
-	else
+	}
+	else{
+		DBInserter inserter = new DBInserter();
+		inserter.insert(name, password, login, Integer.valueOf(age), gender, comments, address);
 		out.write("Registration Success");
+	}
 %>
+
+</body>
+</html>
