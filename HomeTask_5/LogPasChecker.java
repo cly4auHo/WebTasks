@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class LogPasChecker {
     private static final String GET_LOG = "SELECT id FROM users WHERE loggin='";
-    private static final String GET_PAS = " AND password=";
+    private static final String GET_PAS = "' AND password=";
     private static final String NAME_OF_COLUMN = "id";
 
     public LogPasChecker(){ }
@@ -37,26 +37,24 @@ public class LogPasChecker {
 
         try {
             stmt = conn.createStatement();
-            rs = stmt.executeQuery(GET_LOG + logginToCheck + "'" + GET_PAS + passwordToCheck);
+            rs = stmt.executeQuery(GET_LOG + logginToCheck + GET_PAS + passwordToCheck);
             rs.next();
             idCheck = rs.getString(NAME_OF_COLUMN);
 
             if (idCheck.length() == 0) {
-                return false;
+               id = 0;
             } else {
                 id = rs.getInt(NAME_OF_COLUMN);
             }
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
+            ex.printStackTrace();         
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException sqlEx) {
-                    sqlEx.printStackTrace();
-                    return false;
+                    sqlEx.printStackTrace();            
                 }
 
                 rs = null;
@@ -66,8 +64,7 @@ public class LogPasChecker {
                 try {
                     stmt.close();
                 } catch (SQLException sqlEx) {
-                    sqlEx.printStackTrace();
-                    return false;
+                    sqlEx.printStackTrace();               
                 }
 
                 stmt = null;
