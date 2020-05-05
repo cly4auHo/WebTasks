@@ -2,9 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,16 +28,16 @@ public class CardController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Map<Product, Integer> listProduct;
+		List<Product> listProduct;
 		request.setAttribute("imgHeight", "100px");
 		if (session.getAttribute(CART) != null) {
-			listProduct = (Map) session.getAttribute(CART);
+			listProduct = (List<Product>) session.getAttribute(CART);
 		} else {
-			listProduct = new HashMap<Product, Integer>();
+			listProduct = new ArrayList<Product>();
 		}
 
 		request.setAttribute("listProducts", listProduct);
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/Cart.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/Products.jsp");
 		rd.forward(request, response);
 	}
 
@@ -47,21 +45,17 @@ public class CardController extends HttpServlet {
 			throws ServletException, IOException {
 		DBWorker worker = new DBWorker();
 		HttpSession session = request.getSession();
-
-		Map<Product, Integer> productsMap = new HashMap<Product, Integer>();
+		List<Product> listProduct;
 
 		if (session.getAttribute(CART) != null) {
-			productsMap = (Map) session.getAttribute(CART);
-		}
-		Product product = worker.getProduct(Integer.valueOf(request.getParameter("idProduct")));
-		if (productsMap.containsKey(product)) {
-			productsMap.put(product, productsMap.get(product) + 1);
-		}else {
-			productsMap.put(product, 1);
+			listProduct = (List<Product>) session.getAttribute(CART);
+		} else {
+			listProduct = new ArrayList<Product>();
 		}
 
-		session.setAttribute(CART, productsMap);
-
+		listProduct.addAll(worker.getProduct(Integer.valueOf(request.getParameter("idProduct"))));
+		session.setAttribute(CART, listProduct);
+		request.setAttribute("listProducts", listProduct);
 		response.sendRedirect("/lesson08/products");
 	}
 

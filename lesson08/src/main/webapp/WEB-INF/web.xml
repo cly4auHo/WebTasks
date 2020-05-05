@@ -34,6 +34,24 @@
   	<description></description>
   	<servlet-class>controller.CardController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>RegistrationController</servlet-name>
+  	<display-name>RegistrationController</display-name>
+  	<description></description>
+  	<servlet-class>controller.RegistrationController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>RegController</servlet-name>
+  	<display-name>RegController</display-name>
+  	<description></description>
+  	<servlet-class>controller.RegController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>LogginController</servlet-name>
+  	<display-name>LogginController</display-name>
+  	<description></description>
+  	<servlet-class>controller.LogginController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>NewServlet</servlet-name>
   	<url-pattern>/NewServlet</url-pattern>
@@ -53,5 +71,13 @@
   <servlet-mapping>
   	<servlet-name>CardController</servlet-name>
   	<url-pattern>/CardController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>RegController</servlet-name>
+  	<url-pattern>/registration</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>LogginController</servlet-name>
+  	<url-pattern>/Loggin</url-pattern>
   </servlet-mapping>
 </web-app>

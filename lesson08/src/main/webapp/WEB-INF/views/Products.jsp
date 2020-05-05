@@ -38,8 +38,8 @@ Released   : 20110926
 			<ul>
 				<li class="current_page_item"><a href="index.php">Главная</a></li>
 				<li><a href="/lesson08/products">Товары</a></li>
-				<li><a href="registration.php">Регистрация</a></li>
-				<li><a href="login.php">Вход</a></li>
+				<li><a href="/lesson08/registration">Регистрация</a></li>
+				<li><a href="/lesson08/Loggin">Вход</a></li>
 				<li><a href="/lesson08/CardController">Корзина</a></li>
 			</ul>
 		</div>
@@ -96,33 +96,32 @@ Released   : 20110926
 								</tr>
 								<tr>
 									<td><i>price:</i> ${product.price}</td>
-									<td align='right'><form action='CardController' method='post'>
+									<td align='right'><form action='CardController'
+											method='post'>
 											<input type='hidden' name='idProduct' value='${product.id}'><input
 												type='submit' value='Buy'>
 										</form></td>
 								</tr>
-
 							</table>
-
 						</c:forEach> </center>
 					</div>
 
 					<div id="sidebar">
 						<table border=1>
 							<tr>
-								<td width="252" align="left"><font color=white> Вы
-									авторизировались как Антон<br />
+								<td width="252" align="left"><font color=white> 
+								Вы авторизировались как Антон <br />
 									В вашей корзине 0 товаров. </font></td>
 							</tr>
 						</table>
 						<h2>Боковое меню</h2>
 						<ul>
-							<li><a href="?category=Food">Food</a></li>
-							<li><a href="?category=ForFood">ForFood</a></li>
-							<li><a href="?category=miniMax">miniMax</a></li>
-							<li><a href="registration.php">Регистрация</a></li>
-							<li><a href="login.php">Вход</a></li>
-							<li><a href="cart.php">Корзина</a></li>
+							<li><a href="?category=U.S.A.">U.S.A.</a></li>
+							<li><a href="?category=Euro">Euro</a></li>
+							<li><a href="?category=Japan">Japan</a></li>
+							<li><a href="/lesson08/registration">Регистрация</a></li>
+							<li><a href="/lesson08/Loggin">Вход</a></li>
+							<li><a href="/lesson08/CardController">Корзина</a></li>
 						</ul>
 					</div>
 				</div>

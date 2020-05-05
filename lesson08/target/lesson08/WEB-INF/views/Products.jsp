@@ -85,8 +85,7 @@ Released   : 20110926
 								<tr>
 									<td width='200px'><b>${product.name}</b></td>
 									<td width='100px'><form method='post'>
-											<input type='hidden' name='idProduct' value='${product.id}'><input
-												type='submit' value='More'>
+									<input type='hidden' name='idProduct' value='${product.id}'><input type='submit' value='More'>
 										</form></td>
 								</tr>
 								<tr>
@@ -97,11 +96,10 @@ Released   : 20110926
 								<tr>
 									<td><i>price:</i> ${product.price}</td>
 									<td align='right'><form action='CardController' method='post'>
-											<input type='hidden' name='idProduct' value='${product.id}'><input
-												type='submit' value='Buy'>
-										</form></td>
+									<input type='hidden' name='idProduct' value='${product.id}'><input type='submit' value='Buy'>
+										</form>
+										</td>
 								</tr>
-
 							</table>
 
 						</c:forEach> </center>
@@ -117,9 +115,9 @@ Released   : 20110926
 						</table>
 						<h2>Боковое меню</h2>
 						<ul>
-							<li><a href="?category=Food">Food</a></li>
-							<li><a href="?category=ForFood">ForFood</a></li>
-							<li><a href="?category=miniMax">miniMax</a></li>
+							<li><a href="?category=U.S.A.">U.S.A.</a></li>
+							<li><a href="?category=Euro">Euro</a></li>
+							<li><a href="?category=Japan">Japan</a></li>
 							<li><a href="registration.php">Регистрация</a></li>
 							<li><a href="login.php">Вход</a></li>
 							<li><a href="cart.php">Корзина</a></li>
