@@ -22,31 +22,17 @@ public class MySQLProductDAO implements ProductDAO{
 	private final static String GET_CATEGORY = "SELECT * FROM products WHERE category=?";
 	
 	@Override
-	public Product getProduct(int id) {
+	public Product getProductById(int id) {
 		Product product = null;
-
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		Connection conn = null;
-
-		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/myshop?" + "user=root&password=");
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-
+		Connection conn = getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		try {
-
 			stmt = conn.prepareStatement(IDFORM);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
+			
 			if(rs.next()) {
 				product = new Product();
 				product.setId(rs.getInt("id"));
@@ -55,7 +41,6 @@ public class MySQLProductDAO implements ProductDAO{
 				product.setDescription(rs.getString("description"));
 				product.setCategory(rs.getString("category"));
 			}
-
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -91,28 +76,14 @@ public class MySQLProductDAO implements ProductDAO{
 	@Override
 	public List<Product> getProducts() {
 		List<Product> productList = new ArrayList<Product>();
-
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		Connection conn = null;
-
-		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/myshop?" + "user=root&password=");
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-
+		Connection conn = getConnection();
 		Statement stmt = null;
 		ResultSet rs = null;
 
 		try {
-
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(SELECTALL);
+			
 			while (rs.next()) {
 				Product product = new Product();
 				product.setId(rs.getInt("id"));
@@ -122,7 +93,6 @@ public class MySQLProductDAO implements ProductDAO{
 				product.setCategory(rs.getString("category"));
 				productList.add(product);
 			}
-
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -158,29 +128,15 @@ public class MySQLProductDAO implements ProductDAO{
 	@Override
 	public List<Product> getProductsCategory(String category) {
 		List<Product> productList = new ArrayList<Product>();
-
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		Connection conn = null;
-
-		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/myshop?" + "user=root&password=");
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-
+		Connection conn = getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		try {
-
 			stmt = conn.prepareStatement(GET_CATEGORY);
 			stmt.setString(1, category);
 			rs = stmt.executeQuery();
+			
 			while(rs.next()) {
 				Product product = new Product();
 				product.setId(rs.getInt("id"));
@@ -190,7 +146,6 @@ public class MySQLProductDAO implements ProductDAO{
 				product.setCategory(rs.getString("category"));
 				productList.add(product);
 			}
-
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -223,4 +178,21 @@ public class MySQLProductDAO implements ProductDAO{
 		return productList;
 	}
 
+	private Connection getConnection() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		Connection conn = null;
+
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/myshop?" + "user=root&password=");
+		} catch (SQLException ex) {
+			ex.printStackTrace();	
+		}
+		
+		return conn;
+	}	
 }

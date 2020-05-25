@@ -51,7 +51,7 @@ public class ControllerCart {
 		if (productDeleteId != null) {
 			Map<Product, Integer> listProduct;
 			listProduct = (Map) session.getAttribute(CART);
-			Product product = productDB.getProduct(Integer.valueOf(productDeleteId));
+			Product product = productDB.getProductById(Integer.valueOf(productDeleteId));
 			listProduct.remove(product);
 			int qnt = listProduct.size();
 			session.setAttribute(CART_VALUE, qnt);
@@ -90,7 +90,7 @@ public class ControllerCart {
 		}
 		
 		if (productId != null && productCount != null) {
-			Product product = productDB.getProduct(Integer.valueOf(productId));
+			Product product = productDB.getProductById(Integer.valueOf(productId));
 			Integer countProducts = Integer.valueOf(productCount);
 			Integer valueCount = 0;
 			
@@ -139,7 +139,7 @@ public class ControllerCart {
 		}
 		
 		if (productId != null && productQnt != null) {
-			Product product = productDB.getProduct(Integer.valueOf(productId));
+			Product product = productDB.getProductById(Integer.valueOf(productId));
 			Integer countProducts = Integer.valueOf(productQnt);
 			
 			if (productsMap.containsKey(product)) {

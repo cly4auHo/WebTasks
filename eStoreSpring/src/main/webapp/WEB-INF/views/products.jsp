@@ -5,7 +5,7 @@
 <html>
 <script src="<c:url value='/resources/js/jquery-3.5.0.js' />"></script>
 <head>
-<title>CoffeeShop</title>
+<title>Cars</title>
 <link href="<c:url value='/resources/styles/bootstrap.css' />"
 	rel='stylesheet' type='text/css' />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -21,9 +21,7 @@
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
 <script type="application/x-javascript">
 	
-
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
-
 
 </script>
 <!--webfont-->
@@ -84,7 +82,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="wrap">
 				<div class="header-left">
 					<ul>
-						<li><a href="#">24x7 Customer Care </a></li> |
+						<li><a href="#">24x7 Customer Care </a></li>
 						<li><a href="order.html"> Track Order</a></li>
 					</ul>
 				</div>
@@ -101,14 +99,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<div style='float: left;'>
 								<input type="button" class='botton' onclick='logOut(this)'
 									id="loginOut" value="LOG OUT">|
-								</li>
 							</div>
 
 						</c:if>
 						<c:if test="${sessionScope.keyUser == null}">
 							<form style='float: left;' action='login' method='post'>
 								<input type='submit' class='botton' value='Sign In'>|
-								</li>
 							</form>
 						</c:if>
 
@@ -118,7 +114,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								value='Sign Up'></li>
 						</form>
 					</ul>
-
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -187,7 +182,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							</div>
 						</div></li>
 
-
 					<li><a class="color1"
 						href="/eStoreSpring/products?category=U.S.A.">U.S.A.</a>
 						<div class="megapanel">
@@ -204,8 +198,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								</div>
 								<div class="col1">
 									<div class="h_nav">
-										<h4>help</h4>
 										<ul>
+											<li>help</li>
 											<li><a href="/eStoreSpring/products">trends</a></li>
 											<li><a href="/eStoreSpring/products">contacts</a></li>
 										</ul>
@@ -247,8 +241,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								</div>
 								<div class="col1">
 									<div class="h_nav">
-										<h4>help</h4>
 										<ul>
+											<li>help</li>
 											<li><a href="/eStoreSpring/products">trends</a></li>
 											<li><a href="/eStoreSpring/products">contacts</a></li>
 										</ul>
@@ -290,8 +284,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								</div>
 								<div class="col1">
 									<div class="h_nav">
-										<h4>help</h4>
 										<ul>
+											<li>help</li>
 											<li><a href="/eStoreSpring/products">trends</a></li>
 											<li><a href="/eStoreSpring/products">contacts</a></li>
 										</ul>
@@ -327,39 +321,43 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<div class="heading">
 						<h3>Feature Products</h3>
 					</div>
-
 					<div class="clearfix"></div>
 				</div>
 
-
-
-
 				<ul class="products clearfix">
-
 
 					<c:forEach items="${listProducts}" var="product">
 						<li class="product-wrapper">
 
 							<div class="product">
-								<a href="/eStoreSpring/products?id=${product.id}"><div
-										class="product-photo">
+								<a href="/eStoreSpring/products?id=${product.id}">
+									<div class="product-photo">
 										<img height="${imgHeight}"
 											src="<c:url value='/resources/images/${product.id}.jpg' />"
 											alt="" />
-									</div></a>
+									</div>
+								</a>
 								<h2>${product.name}</h2>
 								<c:if test="${product.lenghtName <= 24}">
 									<br>
 								</c:if>
-								<p>${product.description}</p>
+								<c:choose>
+									<c:when test="${count.equals('1')}">
+										<p>${product.description}</p>
+									</c:when>
+									<c:otherwise>
+										<textarea maxlength="50">${product.description} ...</textarea>
+									</c:otherwise>
+								</c:choose>
+
 								<p>
 									<br> <span class="price">${product.price}₴</span>
 								</p>
 								<br> <br> <img width='25px' height='25px'
 									src="<c:url value='/resources/images/minus.png' />"
 									onclick='minus("${product.id}")' /> <input size='2'
-									type='text' id='${product.id}' value='1' /> <img
-									width='25px' height='25px'
+									type='text' id='${product.id}' value='1' /> <img width='25px'
+									height='25px'
 									src="<c:url value='/resources/images/plus.png' />"
 									onclick='plus("${product.id}")' /> <input style="float: left;"
 									type='button' value='Add to Cart'
@@ -376,12 +374,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 		</div>
 	</div>
-	</div>
+
 	<div class="footer">
 		<div class="wrap">
 			<div class="footer-middle">
 				<div class="col-md-6 about-text text-right">
-					<h4>About CoffeeShop</h4>
+					<h4>About Car Shop</h4>
 					<p>We are the best!</p>
 				</div>
 				<div class="clearfix"></div>
@@ -401,7 +399,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			var qnt = document.getElementById(id);
 			qnt.value = +qnt.value + 1;
 		}
-		
+
 		function minus(id) {
 			var qnt = document.getElementById(id);
 			if (qnt.value > 1) {
@@ -416,7 +414,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				data : {
 					idProduct : id,
 				},
-				success : function(data) { // вешаем свой обработчик на функцию success
+				success : function(data) {
 					document.getElementById('cartQnt').innerHTML = data;
 				}
 			})
@@ -431,7 +429,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					productId : id,
 					productQnt : qnt,
 				},
-				success : function(data) { // вешаем свой обработчик на функцию success
+				success : function(data) {
 					document.getElementById('cartQnt').innerHTML = data;
 				}
 			})

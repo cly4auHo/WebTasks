@@ -19,14 +19,21 @@ public class ControllerRegister {
 
 	@Autowired
 	private MySQLUserDAO userDB;
-
+	
+	@Autowired
+	private HttpSession session;
+	
+	private static final String NAME_OF_JSP = "register";
+	private static final String CART_KEY = "CART_VALUE";
+	private static final String REGISTRATION_KEY = "registration";
+	
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
-	public String getGetRegisterPage(HttpSession session) {
-		if (session.getAttribute("CART_VALUE") == null) {
-			session.setAttribute("CART_VALUE", 0);
+	public String getGetRegisterPage() {
+		if (session.getAttribute(CART_KEY) == null) {
+			session.setAttribute(CART_KEY, 0);
 		}
 		
-		return "register";
+		return NAME_OF_JSP;
 	}
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST, params = { "login", "name", "password", "age",
@@ -37,8 +44,8 @@ public class ControllerRegister {
 			@RequestParam("address") String address, @RequestParam("amigo") String amigo, HttpSession session,
 			ModelMap model) {
 		
-		if (session.getAttribute("CART_VALUE") == null) {
-			session.setAttribute("CART_VALUE", 0);
+		if (session.getAttribute(CART_KEY) == null) {
+			session.setAttribute(CART_KEY, 0);
 		}
 		
 		user.setLogin(login);
@@ -53,20 +60,11 @@ public class ControllerRegister {
 		model.addAttribute("checkLogin", userDB.getCheckLogin());
 
 		if (!userDB.getCheckLogin()) {
-			model.addAttribute("registration", userDB.getRegistration());
+			model.addAttribute(REGISTRATION_KEY, userDB.getRegistration());
 		} else {
-			model.addAttribute("registration", "fault");
+			model.addAttribute(REGISTRATION_KEY, "fault");
 		}
 
-		return "register";
-	}
-
-	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String getPostRegisterPage(HttpSession session) {
-		if (session.getAttribute("CART_VALUE") == null) {
-			session.setAttribute("CART_VALUE", 0);
-		}
-		
-		return "register";
+		return NAME_OF_JSP;
 	}
 }

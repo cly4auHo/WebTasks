@@ -20,37 +20,20 @@ import dao.UserDAO;
 public class MySQLUserDAO implements UserDAO {
 
 	private User user;
-	private String userName;
-	private boolean show;
-	private String registration;
-	private String access;
-	private boolean checkLogin;
-	private final static String INSERT = "INSERT INTO users(name, loggin, password, age, gender, comment, address) VALUES (?,?,?,?,?,?,?)";
+	private static final String INSERT = "INSERT INTO users(name, loggin, password, age, gender, comment, address) VALUES (?,?,?,?,?,?,?)";
 	private static final String SALT = "SALT";
-
+	private static final String SELECT_NAME = "SELECT name FROM users WHERE login='";
+	
 	@Override
 	public String getUserName() {
-
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		Connection conn = null;
-
-		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/myshop?" + "user=root&password=");
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-
+		Connection conn = getConnection() ;
 		Statement stmt = null;
 		ResultSet rs = null;
-
+		String userName;
+		
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT name FROM users WHERE login='" + user.getLogin() + "'");
+			rs = stmt.executeQuery(SELECT_NAME + user.getLogin() + "'");
 			rs.next();
 			userName = rs.getString("name");
 		} catch (SQLException ex) {
@@ -86,20 +69,7 @@ public class MySQLUserDAO implements UserDAO {
 	}
 
 	public boolean isShow() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		Connection conn = null;
-
-		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/myshop?" + "user=root&password=");
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-
+		Connection conn = getConnection() ;
 		Statement stmt = null;
 		ResultSet rs = null;
 		String existLogin;
@@ -107,7 +77,6 @@ public class MySQLUserDAO implements UserDAO {
 
 		try {
 			stmt = conn.createStatement();
-
 			rs = stmt.executeQuery("SELECT login, password FROM users WHERE login='" + user.getLogin()
 					+ "' AND password='" + toHexString(hashSHA(user.getPassword())) + "'");
 			rs.next();
@@ -149,7 +118,7 @@ public class MySQLUserDAO implements UserDAO {
 
 	public static byte[] hashSHA(String strToHash) {
 		MessageDigest md = null;
-		
+
 		try {
 			md = MessageDigest.getInstance("SHA-256");
 		} catch (NoSuchAlgorithmException e) {
@@ -159,14 +128,10 @@ public class MySQLUserDAO implements UserDAO {
 		return md.digest((strToHash + SALT).getBytes(StandardCharsets.UTF_8));
 	}
 
-	public static String toHexString(byte[] hash) {
-		// Convert byte array into signum representation
+	public static String toHexString(byte[] hash) {	
 		BigInteger number = new BigInteger(1, hash);
-
-		// Convert message digest into hex value
 		StringBuilder hexString = new StringBuilder(number.toString(16));
 
-		// Pad with leading zeros
 		while (hexString.length() < 32) {
 			hexString.insert(0, '0');
 		}
@@ -176,26 +141,12 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public String getAccess() {
-
 		return isShow() ? "Successfully logged" : "Incorrect username or password";
 	}
 
 	@Override
 	public boolean getCheckLogin() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		Connection conn = null;
-
-		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/myshop?" + "user=root&password=");
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-
+		Connection conn = getConnection() ;
 		Statement stmt = null;
 		ResultSet rs = null;
 		String existLogin;
@@ -245,25 +196,12 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public boolean insertData() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		Connection conn = null;
-
-		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/myshop?" + "user=root&password=");
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-
+		Connection conn = getConnection();
 		PreparedStatement stmt = null;
-
+		boolean result = true;
+		
 		try {
 			stmt = conn.prepareStatement(INSERT);
-			// запрос в БД
 			stmt.setString(1, user.getName());
 			stmt.setString(2, user.getLogin());
 			stmt.setString(3, toHexString(hashSHA(user.getPassword())));
@@ -273,8 +211,8 @@ public class MySQLUserDAO implements UserDAO {
 			stmt.setString(7, user.getAddress());
 			stmt.execute();
 		} catch (SQLException ex) {
+			result = false;
 			ex.printStackTrace();
-			return false;
 		} finally {
 
 			if (stmt != null) {
@@ -296,14 +234,28 @@ public class MySQLUserDAO implements UserDAO {
 			}
 		}
 
-		return true;
-	}
-
-	public User getUser() {
-		return user;
+		return result;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	private Connection getConnection() {
+		Connection conn = null;
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/myshop?" + "user=root&password=");
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return conn;
 	}
 }

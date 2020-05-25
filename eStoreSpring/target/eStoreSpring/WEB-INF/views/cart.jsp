@@ -22,11 +22,7 @@
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
 <script type="application/x-javascript">
 	
-	
-	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
-
-
 
 </script>
 <!--webfont-->
@@ -86,7 +82,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="wrap">
 				<div class="header-left">
 					<ul>
-						<li><a href="#">24x7 Customer Care </a></li> |
+						<li><a href="#">24x7 Customer Care </a></li>
 						<li><a href="#"> Track Order</a></li>
 					</ul>
 				</div>
@@ -101,15 +97,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<c:if test="${sessionScope.keyUser != null}">
 							<div style='float: left;'>
 								<input type="button" class='botton' onclick='logOut(this)'
-									id="loginOut" value="LOG OUT">|
-								</li>
+									id="loginOut" value="LOG OUT">|					
 							</div>
 
 						</c:if>
 						<c:if test="${sessionScope.keyUser == null}">
 							<form style='float: left;' action='login' method='post'>
-								<input type='submit' class='botton' value='Sign In'>|
-								</li>
+								<input type='submit' class='botton' value='Sign In'>|						
 							</form>
 						</c:if>
 						<form style='float: left;' action='/eStoreSpring/registration'
@@ -124,6 +118,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="clearfix"></div>
 			</div>
 		</div>
+		
 		<div class="wrap">
 			<div class="header-bottom">
 				<div class="logo">

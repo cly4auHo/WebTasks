@@ -6,7 +6,7 @@ import model.Product;
 
 public interface ProductDAO {
 
-	public Product getProduct(int id);
+	public Product getProductById(int id);
 	
 	public List<Product> getProducts();
 	

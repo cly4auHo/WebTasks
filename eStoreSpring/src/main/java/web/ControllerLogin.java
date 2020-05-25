@@ -25,44 +25,42 @@ public class ControllerLogin {
 	@Autowired
 	private MySQLUserDAO userDB;
 	
+	@Autowired
+	private HttpSession session;
+	
 	private boolean showForm;
-
+	
+	private static final String NAME_OF_JSP = "login";
+	private static final String SHOW_FORM_KEY = "showForm";
+	private static final String CART_KEY ="CART_VALUE";
+	
+	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String getGetLoginPage(HttpSession session) {
-		if (session.getAttribute("keyUser") == null) {
-			showForm = false;
-		}else {
-			showForm = true;
+	public String getGetLoginPage() {
+		showForm = (session.getAttribute("keyUser") != null);
+		session.setAttribute(SHOW_FORM_KEY, showForm);
+		
+		if (session.getAttribute(CART_KEY) == null) {
+			session.setAttribute(CART_KEY, 0);
 		}
 		
-		session.setAttribute("showForm", showForm);
-		
-		if (session.getAttribute("CART_VALUE") == null) {
-			session.setAttribute("CART_VALUE", 0);
-		}
-		
-		return "login";
+		return NAME_OF_JSP;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "loginOut" })
 	public void doLogOut(@RequestParam("loginOut") String loginOut, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) {
-		if (session.getAttribute("CART_VALUE") == null) {
-			session.setAttribute("CART_VALUE", 0);
+		if (session.getAttribute(CART_KEY) == null) {
+			session.setAttribute(CART_KEY, 0);
 		}
 		
 		if (loginOut != null) {
 			session.invalidate();
 			session = request.getSession(true);
 			showForm = false;
-			session.setAttribute("showForm", showForm);
+			session.setAttribute(SHOW_FORM_KEY, showForm);
 			session.removeAttribute("keyUser");
 			session.removeAttribute("currentUserName");
-
-			if (session.getAttribute("CART_VALUE") == null) {
-				session.setAttribute("CART_VALUE", 0);
-			}
-			
 			PrintWriter out;
 			
 			try {
@@ -77,39 +75,32 @@ public class ControllerLogin {
 	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "logOut" })
 	public String getPostLoginPage(@RequestParam("logOut") String logOut, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) {
-		if (session.getAttribute("CART_VALUE") == null) {
-			session.setAttribute("CART_VALUE", 0);
+		if (session.getAttribute(CART_KEY) == null) {
+			session.setAttribute(CART_KEY, 0);
 		}
 		
 		if (logOut != null) {
 			session.invalidate();
 			session = request.getSession(true);
 			showForm = false;
-			session.setAttribute("showForm", showForm);
+			session.setAttribute(SHOW_FORM_KEY, showForm);
 			session.removeAttribute("access");
 			session.removeAttribute("keyUser");
 			session.removeAttribute("currentUserName");
-
-			if (session.getAttribute("CART_VALUE") == null) {
-				session.setAttribute("CART_VALUE", 0);
-			}
-			
-			return "login";
 		}
 
-		return "login";
+		return NAME_OF_JSP;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "login", "password" })
 	public String getPostLoginPage(@RequestParam("login") String login, @RequestParam("password") String password,
 			HttpSession session, HttpServletRequest request) {
 
-		if (session.getAttribute("CART_VALUE") == null) {
-			session.setAttribute("CART_VALUE", 0);
+		if (session.getAttribute(CART_KEY) == null) {
+			session.setAttribute(CART_KEY, 0);
 		}
 		
 		if (login != null || password != null) {
-
 			user = new User();
 			user.setLogin(login);
 			user.setPassword(password);
@@ -120,22 +111,20 @@ public class ControllerLogin {
 			if (userDB.getAccess().equals("Successfully logged")) {
 				session.setAttribute("keyUser", "sessionCheck");
 				showForm = false;
-				session.setAttribute("showForm", showForm);
+				session.setAttribute(SHOW_FORM_KEY, showForm);
 				session.setAttribute("access", userDB.getAccess());
 			}
 
 			if (session.getAttribute("keyUser") != null) {
 				session.setAttribute("currentUserName", "Hello " + userDB.getUserName() + "!");
 				showForm = (session.getAttribute("keyUser") != null) ? true : false;
-				session.setAttribute("showForm", showForm);
+				session.setAttribute(SHOW_FORM_KEY, showForm);
 			}
-
-			return "login";
 		} else {
-			getGetLoginPage(session);
+			getGetLoginPage();
 		}
 
-		return "login";
+		return NAME_OF_JSP;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -144,12 +133,12 @@ public class ControllerLogin {
 			showForm = false;
 		}
 		
-		session.setAttribute("showForm", showForm);
+		session.setAttribute(SHOW_FORM_KEY, showForm);
 		
-		if (session.getAttribute("CART_VALUE") == null) {
-			session.setAttribute("CART_VALUE", 0);
+		if (session.getAttribute(CART_KEY) == null) {
+			session.setAttribute(CART_KEY, 0);
 		}
 
-		return "login";
+		return NAME_OF_JSP;
 	}
 }
